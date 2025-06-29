@@ -50,6 +50,34 @@
     to { opacity: 1; transform: translateY(0); }
 }
 </style>
+         <style>
+    /* Your existing styles here */
+
+    /* Paste the smoke particle CSS here */
+    .smoke-particle {
+      position: fixed;
+      pointer-events: none;
+      width: 15px;
+      height: 15px;
+      background: rgba(0, 195, 255, 0.4);
+      border-radius: 50%;
+      filter: blur(6px);
+      animation: fadeOutSmoke 1s forwards;
+      mix-blend-mode: screen;
+      z-index: 10000;
+    }
+
+    @keyframes fadeOutSmoke {
+      from {
+        opacity: 0.6;
+        transform: scale(1);
+      }
+      to {
+        opacity: 0;
+        transform: scale(2);
+      }
+    }
+  </style>
         
     </head>
       <body>
@@ -179,6 +207,22 @@
   }
 }
 </style>
+          <script>
+document.addEventListener('mousemove', (e) => {
+  const particle = document.createElement('div');
+  particle.classList.add('smoke-particle');
+  document.body.appendChild(particle);
+
+  // Position particle at mouse location, centered
+  particle.style.left = (e.clientX - 7.5) + 'px';
+  particle.style.top = (e.clientY - 7.5) + 'px';
+
+  // Remove particle after animation finishes (1s)
+  setTimeout(() => {
+    particle.remove();
+  }, 1000);
+});
+</script>
     <!-- OVERLAY CONTROL SCRIPT -->
     <script>
       function showImage(type, event) {
