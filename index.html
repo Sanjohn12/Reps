@@ -82,7 +82,7 @@
   </style>
         
     </head>
-      <body>
+     <body>
   <!-- HEADER -->
   <header
     style="
@@ -120,7 +120,7 @@
       <button onclick="showImage('forestChange', event)" class="icon-btn" title="Forest Change">🌲</button>
     </aside>
 
-    <!-- MAP + IMAGE OVERLAY -->
+    <!-- MAP + IMAGE & GIF -->
     <main style="flex: 1; position: relative">
       <div id="map" style="width: 100%; height: 100%">
         <!-- Popup -->
@@ -129,78 +129,65 @@
           <div id="popup-content"></div>
         </div>
 
-        <!-- Static Image Panel -->
+        <!-- WRAPPER FOR IMAGE AND GIF -->
         <div
-          id="overlayImageContainer"
+          id="overlayWrapper"
           style="
             position: absolute;
             bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-            padding: 15px;
-            max-width: 700px;
-            max-height: 500px;
-            z-index: 9998;
             display: none;
+            z-index: 9998;
             animation: fadeIn 0.4s ease;
           "
         >
-          <button
-            onclick="hideOverlay()"
+          <!-- IMAGE PANEL -->
+          <div
+            id="overlayImageContainer"
             style="
-              position: absolute;
-              top: 5px;
-              right: 8px;
-              background: transparent;
-              border: none;
-              font-size: 18px;
-              cursor: pointer;
-              color: #888;
+              background: white;
+              border-radius: 12px;
+              box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+              padding: 15px;
+              max-width: 700px;
+              max-height: 500px;
+              margin-bottom: 10px;
+              position: relative;
             "
           >
-            &times;
-          </button>
-          <img id="overlayImage" src="" alt="" style="width: 100%; height: auto; border-radius: 8px" />
-        </div>
+            <button
+              onclick="hideOverlay()"
+              style="
+                position: absolute;
+                top: 5px;
+                right: 8px;
+                background: transparent;
+                border: none;
+                font-size: 18px;
+                cursor: pointer;
+                color: #888;
+              "
+            >
+              &times;
+            </button>
+            <img id="overlayImage" src="" alt="" style="width: 100%; height: auto; border-radius: 8px" />
+          </div>
 
-        <!-- GIF Panel -->
-        <div
-          id="overlayGifContainer"
-          style="
-            position: absolute;
-            bottom: 30px;
-            left: calc(50% + 400px);
-            transform: translateX(-50%);
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-            padding: 15px;
-            max-width: 300px;
-            max-height: 500px;
-            z-index: 9998;
-            display: none;
-            animation: fadeIn 0.4s ease;
-          "
-        >
-          <button
-            onclick="hideOverlay()"
+          <!-- GIF PANEL -->
+          <div
+            id="overlayGifContainer"
             style="
-              position: absolute;
-              top: 5px;
-              right: 8px;
-              background: transparent;
-              border: none;
-              font-size: 18px;
-              cursor: pointer;
-              color: #888;
+              background: white;
+              border-radius: 12px;
+              box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+              padding: 15px;
+              max-width: 700px;
+              max-height: 500px;
             "
           >
-            &times;
-          </button>
-          <img id="overlayGif" src="" alt="GIF" style="width: 100%; height: auto; border-radius: 8px" />
+            <img id="overlayGif" src="" alt="GIF" style="width: 100%; height: auto; border-radius: 8px" />
+          </div>
         </div>
       </div>
     </main>
@@ -230,36 +217,27 @@
     }
   </style>
 
-  <!-- Smoke Trail Script -->
+  <!-- Smoke Trail -->
   <script>
     document.addEventListener('mousemove', (e) => {
       const particle = document.createElement('div');
       particle.classList.add('smoke-particle');
       document.body.appendChild(particle);
-
       particle.style.left = (e.clientX - 7.5) + 'px';
       particle.style.top = (e.clientY - 7.5) + 'px';
-
-      setTimeout(() => {
-        particle.remove();
-      }, 1000);
+      setTimeout(() => particle.remove(), 1000);
     });
   </script>
 
-  <!-- Main Overlay Logic -->
+  <!-- Overlay Logic -->
   <script>
     function showImage(type, event) {
       const overlayImg = document.getElementById("overlayImage");
-      const overlayBox = document.getElementById("overlayImageContainer");
-
       const overlayGif = document.getElementById("overlayGif");
-      const gifBox = document.getElementById("overlayGifContainer");
-
+      const overlayWrapper = document.getElementById("overlayWrapper");
       const buttons = document.querySelectorAll(".icon-btn");
 
-      let src = "";
-      let alt = "";
-      let gifSrc = "";
+      let src = "", gifSrc = "", alt = "";
 
       switch (type) {
         case "temperature":
@@ -286,22 +264,21 @@
 
       overlayImg.src = src;
       overlayImg.alt = alt;
-      overlayBox.style.display = "block";
-
       overlayGif.src = gifSrc;
       overlayGif.alt = alt + " animation";
-      gifBox.style.display = "block";
+
+      overlayWrapper.style.display = "block";
 
       buttons.forEach((btn) => btn.classList.remove("active"));
       event.currentTarget.classList.add("active");
     }
 
     function hideOverlay() {
-      document.getElementById("overlayImageContainer").style.display = "none";
-      document.getElementById("overlayGifContainer").style.display = "none";
+      document.getElementById("overlayWrapper").style.display = "none";
       document.querySelectorAll(".icon-btn").forEach((btn) => btn.classList.remove("active"));
     }
   </script>
+
 
         <script src="resources/qgis2web_expressions.js"></script>
         <script src="./resources/functions.js"></script>
