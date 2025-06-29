@@ -83,190 +83,226 @@
         
     </head>
       <body>
-    <!-- HEADER -->
-    <header
-      style="
-        background: linear-gradient(90deg, #1d2b64, #f8cdda);
-        color: white;
-        padding: 20px 30px;
-        text-align: center;
-        font-size: 24px;
-        font-weight: bold;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-      "
-    >
-      🌍 Environmental Dashboard – Puttalam & Mannar
-    </header>
-
-    <!-- LAYOUT -->
-    <div style="display: flex; height: calc(100vh - 70px)">
-      <!-- SIDEBAR -->
-      <aside
-        style="
-          width: 80px;
-          background: #202940;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          padding-top: 20px;
-          gap: 20px;
-          box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
-          z-index: 9999;
-        "
-      >
-        <button onclick="showImage('temperature', event)" class="icon-btn" title="Temperature">🌡️</button>
-        <button onclick="showImage('precipitation', event)" class="icon-btn" title="Precipitation">🌧️</button>
-        <button onclick="showImage('wind', event)" class="icon-btn" title="Wind">💨</button>
-        <button onclick="showImage('forestChange', event)" class="icon-btn" title="Forest Change">🌲</button>
-      </aside>
-
-      <!-- MAP + IMAGE OVERLAY -->
-      <main style="flex: 1; position: relative">
-        <!-- MAP -->
-        <div id="map" style="width: 100%; height: 100%">
-          <div id="popup" class="ol-popup">
-            <a href="#" id="popup-closer" class="ol-popup-closer"></a>
-            <div id="popup-content"></div>
-          </div>
-
-         <!-- OVERLAY IMAGE PANEL -->
-<div
-  id="overlayImageContainer"
-  style="
-    position: absolute;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    padding: 15px;
-    max-width: 700px;
-    max-height: 500px;
-    z-index: 9998;
-    display: none;
-    animation: fadeIn 0.4s ease;
-  "
->
-  <button
-    onclick="hideOverlay()"
+  <!-- HEADER -->
+  <header
     style="
-      position: absolute;
-      top: 5px;
-      right: 8px;
-      background: transparent;
-      border: none;
-      font-size: 18px;
-      cursor: pointer;
-      color: #888;
+      background: linear-gradient(90deg, #1d2b64, #f8cdda);
+      color: white;
+      padding: 20px 30px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     "
   >
-    &times;
-  </button>
-  <img
-    id="overlayImage"
-    src=""
-    alt=""
-    style="width: 100%; height: auto; border-radius: 8px"
-  />
-</div>
+    🌍 Environmental Dashboard – Puttalam & Mannar
+  </header>
+
+  <!-- LAYOUT -->
+  <div style="display: flex; height: calc(100vh - 70px)">
+    <!-- SIDEBAR -->
+    <aside
+      style="
+        width: 80px;
+        background: #202940;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 20px;
+        gap: 20px;
+        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+        z-index: 9999;
+      "
+    >
+      <button onclick="showImage('temperature', event)" class="icon-btn" title="Temperature">🌡️</button>
+      <button onclick="showImage('precipitation', event)" class="icon-btn" title="Precipitation">🌧️</button>
+      <button onclick="showImage('wind', event)" class="icon-btn" title="Wind">💨</button>
+      <button onclick="showImage('forestChange', event)" class="icon-btn" title="Forest Change">🌲</button>
+    </aside>
+
+    <!-- MAP + IMAGE OVERLAY -->
+    <main style="flex: 1; position: relative">
+      <div id="map" style="width: 100%; height: 100%">
+        <!-- Popup -->
+        <div id="popup" class="ol-popup">
+          <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+          <div id="popup-content"></div>
         </div>
-      </main>
-    </div>
 
-    <!-- ICON BUTTON STYLE -->
-    <style>
-      .icon-btn {
-        background: #2e3b5b;
-        color: white;
-        font-size: 22px;
-        width: 50px;
-        height: 50px;
-        border-radius: 10px;
-        border: none;
-        cursor: pointer;
-        transition: background 0.3s ease;
+        <!-- Static Image Panel -->
+        <div
+          id="overlayImageContainer"
+          style="
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            max-width: 700px;
+            max-height: 500px;
+            z-index: 9998;
+            display: none;
+            animation: fadeIn 0.4s ease;
+          "
+        >
+          <button
+            onclick="hideOverlay()"
+            style="
+              position: absolute;
+              top: 5px;
+              right: 8px;
+              background: transparent;
+              border: none;
+              font-size: 18px;
+              cursor: pointer;
+              color: #888;
+            "
+          >
+            &times;
+          </button>
+          <img id="overlayImage" src="" alt="" style="width: 100%; height: auto; border-radius: 8px" />
+        </div>
+
+        <!-- GIF Panel -->
+        <div
+          id="overlayGifContainer"
+          style="
+            position: absolute;
+            bottom: 30px;
+            left: calc(50% + 400px);
+            transform: translateX(-50%);
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            max-width: 300px;
+            max-height: 500px;
+            z-index: 9998;
+            display: none;
+            animation: fadeIn 0.4s ease;
+          "
+        >
+          <button
+            onclick="hideOverlay()"
+            style="
+              position: absolute;
+              top: 5px;
+              right: 8px;
+              background: transparent;
+              border: none;
+              font-size: 18px;
+              cursor: pointer;
+              color: #888;
+            "
+          >
+            &times;
+          </button>
+          <img id="overlayGif" src="" alt="GIF" style="width: 100%; height: auto; border-radius: 8px" />
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ICON BUTTON STYLE -->
+  <style>
+    .icon-btn {
+      background: #2e3b5b;
+      color: white;
+      font-size: 22px;
+      width: 50px;
+      height: 50px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .icon-btn:hover {
+      background: #4e5d88;
+    }
+
+    .icon-btn.active {
+      background: #00c3ff;
+      color: white;
+    }
+  </style>
+
+  <!-- Smoke Trail Script -->
+  <script>
+    document.addEventListener('mousemove', (e) => {
+      const particle = document.createElement('div');
+      particle.classList.add('smoke-particle');
+      document.body.appendChild(particle);
+
+      particle.style.left = (e.clientX - 7.5) + 'px';
+      particle.style.top = (e.clientY - 7.5) + 'px';
+
+      setTimeout(() => {
+        particle.remove();
+      }, 1000);
+    });
+  </script>
+
+  <!-- Main Overlay Logic -->
+  <script>
+    function showImage(type, event) {
+      const overlayImg = document.getElementById("overlayImage");
+      const overlayBox = document.getElementById("overlayImageContainer");
+
+      const overlayGif = document.getElementById("overlayGif");
+      const gifBox = document.getElementById("overlayGifContainer");
+
+      const buttons = document.querySelectorAll(".icon-btn");
+
+      let src = "";
+      let alt = "";
+      let gifSrc = "";
+
+      switch (type) {
+        case "temperature":
+          src = "images/graph_temp.png";
+          gifSrc = "images/temp_anim.gif";
+          alt = "Temperature Map";
+          break;
+        case "precipitation":
+          src = "images/graph.png";
+          gifSrc = "images/precip_anim.gif";
+          alt = "Precipitation Map";
+          break;
+        case "wind":
+          src = "images/graph_win.png";
+          gifSrc = "images/wind_anim.gif";
+          alt = "Wind Map";
+          break;
+        case "forestChange":
+          src = "images/forest.png";
+          gifSrc = "images/forest_anim.gif";
+          alt = "Forest Change";
+          break;
       }
 
-      .icon-btn:hover {
-        background: #4e5d88;
-      }
+      overlayImg.src = src;
+      overlayImg.alt = alt;
+      overlayBox.style.display = "block";
 
-      .icon-btn.active {
-        background: #00c3ff;
-        color: white;
-      }
-    </style>
-<style>
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translate(-50%, 20px);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, 0);
-  }
-}
-</style>
-          <script>
-document.addEventListener('mousemove', (e) => {
-  const particle = document.createElement('div');
-  particle.classList.add('smoke-particle');
-  document.body.appendChild(particle);
+      overlayGif.src = gifSrc;
+      overlayGif.alt = alt + " animation";
+      gifBox.style.display = "block";
 
-  // Position particle at mouse location, centered
-  particle.style.left = (e.clientX - 7.5) + 'px';
-  particle.style.top = (e.clientY - 7.5) + 'px';
+      buttons.forEach((btn) => btn.classList.remove("active"));
+      event.currentTarget.classList.add("active");
+    }
 
-  // Remove particle after animation finishes (1s)
-  setTimeout(() => {
-    particle.remove();
-  }, 1000);
-});
-</script>
-    <!-- OVERLAY CONTROL SCRIPT -->
-    <script>
-      function showImage(type, event) {
-        const overlayImg = document.getElementById("overlayImage");
-        const overlayBox = document.getElementById("overlayImageContainer");
-        const buttons = document.querySelectorAll(".icon-btn");
+    function hideOverlay() {
+      document.getElementById("overlayImageContainer").style.display = "none";
+      document.getElementById("overlayGifContainer").style.display = "none";
+      document.querySelectorAll(".icon-btn").forEach((btn) => btn.classList.remove("active"));
+    }
+  </script>
 
-        let src = "";
-        let alt = "";
-
-        switch (type) {
-          case "temperature":
-            src = "images/graph_temp.png";
-            alt = "Temperature Map";
-            break;
-          case "precipitation":
-            src = "images/graph.png";
-            alt = "Precipitation Map";
-            break;
-          case "wind":
-            src = "images/graph_win.png";
-            alt = "Wind Map";
-            break;
-          case "forestChange":
-            src = "images/forest.png";
-            alt = "Forest Change";
-            break;
-        }
-
-        overlayImg.src = src;
-        overlayImg.alt = alt;
-        overlayBox.style.display = "block";
-
-        buttons.forEach((btn) => btn.classList.remove("active"));
-        event.currentTarget.classList.add("active");
-      }
-
-      function hideOverlay() {
-        document.getElementById("overlayImageContainer").style.display = "none";
-        document.querySelectorAll(".icon-btn").forEach((btn) => btn.classList.remove("active"));
-      }
-    </script>
         <script src="resources/qgis2web_expressions.js"></script>
         <script src="./resources/functions.js"></script>
         <script src="./resources/ol.js"></script>
